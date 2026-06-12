@@ -6,8 +6,6 @@ use App\Clients\Models\ClientsModel;
 
 class ClientsService
 {
-    // ─── Validation helpers ──────────────────────────────────────────────────
-
     public static function validateEmail(string $email): bool
     {
         return filter_var($email, FILTER_VALIDATE_EMAIL) !== false;
@@ -86,8 +84,6 @@ class ClientsService
         return true;
     }
 
-    // ─── Pagination ──────────────────────────────────────────────────────────
-
     public static function paginate(int $page, int $perPage): array
     {
         $page    = max(1, $page);
@@ -110,8 +106,6 @@ class ClientsService
             ],
         ];
     }
-
-    // ─── CRUD ────────────────────────────────────────────────────────────────
 
     public static function create(array $body): array
     {
@@ -164,8 +158,6 @@ class ClientsService
         ClientsModel::delete($id);
         return ['deleted' => true];
     }
-
-    // ─── Internal validation ─────────────────────────────────────────────────
 
     private static function validate(array $body, bool $isUpdate): array
     {

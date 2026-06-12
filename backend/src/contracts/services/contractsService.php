@@ -9,7 +9,6 @@ use App\Services\Models\ServicesModel;
 
 class ContractsService
 {
-    // ─── Pagination ──────────────────────────────────────────────────────────
 
     public static function paginate(int $page, int $perPage): array
     {
@@ -47,7 +46,6 @@ class ContractsService
         ];
     }
 
-    // ─── Single contract detail ───────────────────────────────────────────────
 
     public static function find(int $id): ?array
     {
@@ -67,7 +65,6 @@ class ContractsService
         return $contracts[0];
     }
 
-    // ─── Create contract ─────────────────────────────────────────────────────
 
     public static function create(array $body): array
     {
@@ -94,7 +91,6 @@ class ContractsService
         return ['data' => self::find((int) $id)];
     }
 
-    // ─── Cancel contract ─────────────────────────────────────────────────────
 
     public static function cancel(int $id): array
     {
@@ -108,7 +104,6 @@ class ContractsService
         return ['data' => self::find($id)];
     }
 
-    // ─── Add item ────────────────────────────────────────────────────────────
 
     public static function addItem(int $contractId, array $body): array
     {
@@ -164,7 +159,6 @@ class ContractsService
         return ['data' => self::find($contractId)];
     }
 
-    // ─── Remove item ─────────────────────────────────────────────────────────
 
     public static function removeItem(int $contractId, int $itemId): array
     {
@@ -186,7 +180,6 @@ class ContractsService
         return ['deleted' => true];
     }
 
-    // ─── Internal helpers ────────────────────────────────────────────────────
 
     private static function attachItemsAndTotals(array $contracts): array
     {

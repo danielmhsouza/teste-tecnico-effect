@@ -6,7 +6,6 @@ use App\Services\Models\ServicesModel;
 
 class ServicesService
 {
-    // ─── Pagination ──────────────────────────────────────────────────────────
 
     public static function paginate(int $page, int $perPage): array
     {
@@ -31,7 +30,6 @@ class ServicesService
         ];
     }
 
-    // ─── CRUD ────────────────────────────────────────────────────────────────
 
     public static function create(array $body): array
     {
@@ -79,7 +77,6 @@ class ServicesService
         return ['deleted' => true];
     }
 
-    // ─── Internal validation ─────────────────────────────────────────────────
 
     private static function validate(array $body, bool $isUpdate): array
     {
