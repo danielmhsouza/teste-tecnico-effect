@@ -14,13 +14,10 @@ class ServicesService
         $offset  = ($page - 1) * $perPage;
         $total   = (int) ServicesModel::count();
 
-        $rows = ServicesModel::query(
-            'SELECT * FROM services ORDER BY name ASC LIMIT ? OFFSET ?',
-            [$perPage, $offset]
-        );
+        $rows = ServicesModel::paginate($perPage, $offset);
 
         return [
-            'data' => $rows ?: [],
+            'data' => $rows,
             'meta' => [
                 'total'        => $total,
                 'per_page'     => $perPage,

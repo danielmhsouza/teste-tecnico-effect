@@ -91,13 +91,10 @@ class ClientsService
         $offset  = ($page - 1) * $perPage;
         $total   = (int) ClientsModel::count();
 
-        $rows = ClientsModel::query(
-            'SELECT * FROM clients ORDER BY name ASC LIMIT ? OFFSET ?',
-            [$perPage, $offset]
-        );
+        $rows = ClientsModel::paginate($perPage, $offset);
 
         return [
-            'data' => $rows ?: [],
+            'data' => $rows,
             'meta' => [
                 'total'        => $total,
                 'per_page'     => $perPage,
@@ -114,10 +111,9 @@ class ClientsService
             return ['errors' => $errors];
         }
 
-        $doc = self::sanitizeDocument($body['document']);
-        $id  = ClientsModel::insert([
+        $id = ClientsModel::insert([
             'name'     => trim($body['name']),
-            'document' => $doc,
+            'document' => self::sanitizeDocument($body['document']),
             'email'    => strtolower(trim($body['email'])),
             'status'   => $body['status'] ?? 'active',
         ]);

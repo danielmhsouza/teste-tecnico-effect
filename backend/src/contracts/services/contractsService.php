@@ -24,16 +24,9 @@ class ContractsService
             ];
         }
 
-        $contracts = ContractsModel::query(
-            'SELECT c.*, cl.name AS client_name, cl.email AS client_email, cl.document AS client_document
-             FROM contracts c
-             JOIN clients cl ON cl.id = c.client_id
-             ORDER BY c.created_at DESC
-             LIMIT ? OFFSET ?',
-            [$perPage, $offset]
-        );
+        $contracts = ContractsModel::paginateWithClient($perPage, $offset);
 
-        $contracts = self::attachItemsAndTotals($contracts ?: []);
+        $contracts = self::attachItemsAndTotals($contracts);
 
         return [
             'data' => $contracts,
@@ -49,19 +42,13 @@ class ContractsService
 
     public static function find(int $id): ?array
     {
-        $rows = ContractsModel::query(
-            'SELECT c.*, cl.name AS client_name, cl.email AS client_email, cl.document AS client_document
-             FROM contracts c
-             JOIN clients cl ON cl.id = c.client_id
-             WHERE c.id = ?',
-            [$id]
-        );
+        $row = ContractsModel::findWithClient($id);
 
-        if (empty($rows)) {
+        if (!$row) {
             return null;
         }
 
-        $contracts = self::attachItemsAndTotals($rows);
+        $contracts = self::attachItemsAndTotals([$row]);
         return $contracts[0];
     }
 
@@ -187,16 +174,9 @@ class ContractsService
             return [];
         }
 
-        $contractIds  = array_column($contracts, 'id');
-        $placeholders = implode(',', array_fill(0, count($contractIds), '?'));
+        $contractIds = array_column($contracts, 'id');
 
-        $items = ContractItemsModel::query(
-            "SELECT ci.*, s.name AS service_name, s.base_monthly_value
-             FROM contract_items ci
-             JOIN services s ON s.id = ci.service_id
-             WHERE ci.contract_id IN ($placeholders)",
-            $contractIds
-        );
+        $items = ContractItemsModel::findByContracts($contractIds);
 
         $itemsByContract = [];
         foreach ($items ?: [] as $item) {
