@@ -10,20 +10,23 @@ return new class {
     public function up(\PDO $pdo): void
     {
         $pdo->exec(<<<SQL
-            CREATE TABLE IF NOT EXISTS `create_contracts_table` (
-                `id_contract`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
-                `id_client`           INT UNSIGNED NOT NULL,
-                `data_start`          DATE NOT NULL,
-                `data_end`            DATE NULL,
+            CREATE TABLE IF NOT EXISTS `contracts` (
+                `id`         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+                `client_id`  INT UNSIGNED NOT NULL,
+                `start_date` DATE NOT NULL,
+                `end_date`   DATE NULL,
+                `status`     ENUM('active','canceled') NOT NULL DEFAULT 'active',
                 `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-                FOREIGN KEY (`id_client`) REFERENCES `create_clients_table`(`id_client`) ON DELETE CASCADE,
-                PRIMARY KEY (`id_contract`)
+                `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                PRIMARY KEY (`id`),
+                CONSTRAINT `fk_contracts_client` FOREIGN KEY (`client_id`)
+                    REFERENCES `clients`(`id`) ON DELETE CASCADE
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
         SQL);
     }
 
     public function down(\PDO $pdo): void
     {
-        $pdo->exec('DROP TABLE IF EXISTS `create_contracts_table`');
+        $pdo->exec('DROP TABLE IF EXISTS `contracts`');
     }
 };

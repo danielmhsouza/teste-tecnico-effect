@@ -1,0 +1,197 @@
+# ─────────────────────────────────────────────
+#  ESTRATÉGIAS DE DESCONTO
+# ─────────────────────────────────────────────
+
+### Listar estratégias
+GET http://localhost:8000/api/strategies
+Accept: application/json
+
+###
+
+### Atualizar estratégia (volume)
+PUT http://localhost:8000/api/strategies/1
+Content-Type: application/json
+
+{
+    "label": "Desconto por Volume",
+    "discount_rate": 0.10,
+    "threshold_value": 3,
+    "is_active": 1
+}
+
+###
+
+### Atualizar estratégia (fidelidade)
+PUT http://localhost:8000/api/strategies/2
+Content-Type: application/json
+
+{
+    "label": "Desconto por Fidelidade",
+    "discount_rate": 0.05,
+    "threshold_value": 12,
+    "is_active": 1
+}
+
+###
+
+
+# ─────────────────────────────────────────────
+#  CLIENTES
+# ─────────────────────────────────────────────
+
+### Listar clientes (paginado)
+GET http://localhost:8000/api/clients?page=1&per_page=15
+Accept: application/json
+
+###
+
+### Buscar cliente por ID
+GET http://localhost:8000/api/clients/1
+Accept: application/json
+
+###
+
+### Criar cliente (CPF)
+POST http://localhost:8000/api/clients
+Content-Type: application/json
+
+{
+    "name": "Lojas King",
+    "document": "99999999909",
+    "email": "contato@lojasking.com",
+    "status": "active"
+}
+
+###
+
+### Criar cliente (CNPJ)
+POST http://localhost:8000/api/clients
+Content-Type: application/json
+
+{
+    "name": "Empresa LTDA",
+    "document": "11222333000181",
+    "email": "contato@empresa.com",
+    "status": "active"
+}
+
+###
+
+### Editar cliente
+PUT http://localhost:8000/api/clients/1
+Content-Type: application/json
+
+{
+    "name": "João Silva Atualizado",
+    "status": "inactive"
+}
+
+###
+
+### Excluir cliente
+DELETE http://localhost:8000/api/clients/1
+Accept: application/json
+
+###
+
+
+# ─────────────────────────────────────────────
+#  SERVIÇOS
+# ─────────────────────────────────────────────
+
+### Listar serviços (paginado)
+GET http://localhost:8000/api/services?page=1&per_page=15
+Accept: application/json
+
+###
+
+### Buscar serviço por ID
+GET http://localhost:8000/api/services/1
+Accept: application/json
+
+###
+
+### Criar serviço
+POST http://localhost:8000/api/services
+Content-Type: application/json
+
+{
+    "name": "Suporte Técnico",
+    "base_monthly_value": 350.00
+}
+
+###
+
+### Editar serviço
+PUT http://localhost:8000/api/services/1
+Content-Type: application/json
+
+{
+    "name": "Suporte Técnico Premium",
+    "base_monthly_value": 500.00
+}
+
+###
+
+### Excluir serviço
+DELETE http://localhost:8000/api/services/1
+Accept: application/json
+
+###
+
+
+# ─────────────────────────────────────────────
+#  CONTRATOS
+# ─────────────────────────────────────────────
+
+### Listar contratos (paginado — inclui itens e total mensal calculado)
+GET http://localhost:8000/api/contracts?page=1&per_page=15
+Accept: application/json
+
+###
+
+### Buscar contrato por ID
+GET http://localhost:8000/api/contracts/1
+Accept: application/json
+
+###
+
+### Criar contrato
+POST http://localhost:8000/api/contracts
+Content-Type: application/json
+
+{
+    "client_id": 1,
+    "start_date": "2026-01-01",
+    "end_date": null
+}
+
+###
+
+### Cancelar contrato
+PUT http://localhost:8000/api/contracts/1/status
+Content-Type: application/json
+
+{
+    "status": "canceled"
+}
+
+###
+
+### Adicionar serviço ao contrato
+POST http://localhost:8000/api/contracts/1/items
+Content-Type: application/json
+
+{
+    "service_id": 1,
+    "quantity": 2,
+    "unit_value": 350.00
+}
+
+###
+
+### Remover item do contrato
+DELETE http://localhost:8000/api/contracts/1/items/1
+Accept: application/json
+
+###

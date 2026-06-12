@@ -50,8 +50,10 @@ $app->get('/', function ($ctx) {
 // Cada módulo registra suas próprias rotas recebendo $app como variável.
 // Exemplo: require __DIR__ . '/src/users/routes/usersRoutes.php';
 
-require __DIR__ . '/src/users/routes/usersRoutes.php';
-require __DIR__ . '/src/auth/init.php';
+require __DIR__ . '/src/clients/routes/clientsRoutes.php';
+require __DIR__ . '/src/services/routes/servicesRoutes.php';
+require __DIR__ . '/src/contracts/routes/contractsRoutes.php';
+require __DIR__ . '/src/strategies/routes/strategiesRoutes.php';
 
 // ─── Start ────────────────────────────────────────────────────────────────────
 
